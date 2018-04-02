@@ -1,0 +1,16 @@
+---
+- name: Create the Intermediate CA private key
+  become: yes
+  shell: > 
+    openssl genrsa
+    -out {{ ca_dir }}/{{ ca_int_dir }}/private/{{ int_key }}
+    4096
+  args:
+    creates: "{{ ca_dir }}/{{ ca_int_dir }}/private/{{ int_key }}" 
+
+- name: Set permissions on Intermediate CA private key
+  become: yes
+  file:
+    path: "{{ ca_dir }}/{{ ca_int_dir }}/private/{{ int_key }}"
+    state: file
+    mode: 0600

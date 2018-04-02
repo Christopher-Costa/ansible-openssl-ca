@@ -1,0 +1,51 @@
+---
+- name: Create CA root and sub directories
+  become: yes
+  file:
+    path: "{{ ca_dir }}/{{ item[0] }}/{{ item[1] }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+  with_nested:
+    - [ "{{ ca_root_dir }}", "{{ ca_int_dir }}" ]
+    - "{{ ca_sub_dirs }}"
+
+- name: Create certificate database
+  become: yes
+  copy:
+    content: ''
+    dest: "{{ ca_dir }}/{{ item }}/index.txt"
+    owner: root
+    group: root
+    mode: 0600
+    force: no
+  with_items:
+    - "{{ ca_root_dir }}"
+    - "{{ ca_int_dir }}"
+
+- name: Initialize serial number database
+  become: yes
+  copy:
+    content: 1000
+    dest: "{{ ca_dir }}/{{ item }}/serial"
+    owner: root
+    group: root
+    mode: 0600
+    force: no
+  with_items:
+    - "{{ ca_root_dir }}"
+    - "{{ ca_int_dir }}"
+
+- name: Install openssl.cnf
+  become: yes
+  template:
+    src: ca/openssl.cnf.j2
+    dest: "{{ ca_dir }}/{{ item.0 }}/openssl.cnf"
+    owner: root
+    group: root
+    mode: 0600
+  with_together:
+    - [ "{{ ca_root_dir }}", "{{ ca_int_dir }}" ]
+    - [ "{{ root_key }}", "{{ int_key }}" ]
+    - [ "{{ root_cert }}", "{{ int_cert }}" ]

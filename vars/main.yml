@@ -1,0 +1,10 @@
+---
+# vars file for configure_openssl_ca
+
+ca_sub_dirs:
+  - newcerts
+  - certs   
+  - crl     
+  - private 
+  - requests
+  - csr     

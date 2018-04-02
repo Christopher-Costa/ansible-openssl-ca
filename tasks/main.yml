@@ -1,0 +1,9 @@
+---
+# tasks file for configure_openssl_ca
+
+- include_tasks: setup.yml
+- include_tasks: create_root_key.yml
+- include_tasks: create_root_cert.yml
+- include_tasks: create_intermediate_key.yml
+- include_tasks: create_intermediate_csr.yml
+- include_tasks: create_intermediate_cert.yml

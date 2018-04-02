@@ -1,0 +1,20 @@
+---
+- name: Sign the Intermediate CA certificate
+  become: yes
+  shell: > 
+    openssl ca
+    -extensions v3_intermediate_ca -notext -batch
+    -md {{ crypto_hash }}
+    -days {{ days_valid }}
+    -config {{ ca_dir }}/{{ ca_root_dir }}/openssl.cnf
+    -in {{ ca_dir }}/{{ ca_int_dir }}/csr/{{ int_csr }}
+    -out {{ ca_dir }}/{{ ca_int_dir }}/certs/{{ int_cert }}
+  args:
+    creates: "{{ ca_dir }}/{{ ca_int_dir }}/certs/{{ int_cert }}" 
+
+- name: Set permissions on Intermediate CA certificate
+  become: yes
+  file:
+    path: "{{ ca_dir }}/{{ ca_int_dir }}/certs/{{ int_cert }}"
+    state: file
+    mode: 0600

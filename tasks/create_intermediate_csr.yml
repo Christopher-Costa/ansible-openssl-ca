@@ -1,0 +1,20 @@
+---
+- name: Create the Intermediate CA Certificate Signing Request
+  become: yes
+  shell: > 
+    openssl req
+    -new
+    -config {{ ca_dir }}/{{ ca_int_dir }}/openssl.cnf
+    -key {{ ca_dir }}/{{ ca_int_dir }}/private/{{ int_key }}
+    -{{ crypto_hash }}
+    -out {{ ca_dir }}/{{ ca_int_dir }}/csr/{{ int_csr }}
+    -subj "/C={{ cert_C }}/ST={{ cert_ST }}/L={{ cert_L }}/O={{ cert_O }}/OU={{ cert_OU }}/CN={{ int_cert_CN }}"
+  args:
+    creates: "{{ ca_dir }}/{{ ca_int_dir }}/csr/{{ int_csr }}" 
+
+- name: Set permissions on Intermediate CA CSR
+  become: yes
+  file:
+    path: "{{ ca_dir }}/{{ ca_int_dir }}/private/{{ int_key }}"
+    state: file
+    mode: 0600

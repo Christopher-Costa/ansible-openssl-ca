@@ -1,0 +1,17 @@
+---
+# defaults file for configure_openssl_ca
+
+ca_dir: /root/ca
+ca_root_dir: root
+ca_int_dir: intermediate
+
+crypto_hash: sha256
+days_valid: 7300
+key_length: 2048
+
+root_key: ca.key.pem
+root_cert: ca.cert.pem
+
+int_key: intermediate.key.pem
+int_csr: intermediate.csr.pem
+int_cert: intermediate.cert.pem

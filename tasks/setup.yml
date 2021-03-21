@@ -1,11 +1,12 @@
 ---
 - name: Create CA root and sub directories
   become: yes
+  become_user: "{{ user }}"
   file:
     path: "{{ ca_dir }}/{{ item[0] }}/{{ item[1] }}"
     state: directory
-    owner: root
-    group: root
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: 0700
   with_nested:
     - [ "{{ ca_root_dir }}", "{{ ca_int_dir }}" ]
@@ -13,11 +14,12 @@
 
 - name: Create certificate database
   become: yes
+  become_user: "{{ user }}"
   copy:
     content: ''
     dest: "{{ ca_dir }}/{{ item }}/index.txt"
-    owner: root
-    group: root
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: 0600
     force: no
   with_items:
@@ -26,11 +28,12 @@
 
 - name: Initialize serial number database
   become: yes
+  become_user: "{{ user }}"
   copy:
     content: 1000
     dest: "{{ ca_dir }}/{{ item }}/serial"
-    owner: root
-    group: root
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: 0600
     force: no
   with_items:
@@ -39,11 +42,12 @@
 
 - name: Install openssl.cnf
   become: yes
+  become_user: "{{ user }}"
   template:
     src: ca/openssl.cnf.j2
     dest: "{{ ca_dir }}/{{ item.0 }}/openssl.cnf"
-    owner: root
-    group: root
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: 0600
   with_together:
     - [ "{{ ca_root_dir }}", "{{ ca_int_dir }}" ]

@@ -1,6 +1,7 @@
 ---
 - name: Create the CA root private key
   become: yes
+  become_user: "{{ user }}"
   shell: > 
     openssl genrsa
     -out {{ ca_dir }}/{{ ca_root_dir }}/private/{{ root_key }}
@@ -10,6 +11,7 @@
 
 - name: Set permissions on CA root private key
   become: yes
+  become_user: "{{ user }}"
   file:
     path: "{{ ca_dir }}/{{ ca_root_dir }}/private/{{ root_key }}"
     state: file

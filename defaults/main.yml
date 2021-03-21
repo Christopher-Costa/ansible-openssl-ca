@@ -1,5 +1,6 @@
 ---
 # defaults file for configure_openssl_ca
+user: root
 
 ca_dir: /root/ca
 ca_root_dir: root

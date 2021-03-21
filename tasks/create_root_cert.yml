@@ -1,6 +1,7 @@
 ---
 - name: Create the CA root certificate
   become: yes
+  become_user: "{{ user }}"
   shell: > 
     openssl req
     -new -x509 -extensions v3_ca
@@ -15,6 +16,7 @@
 
 - name: Set permissions on CA root private key
   become: yes
+  become_user: "{{ user }}"
   file:
     path: "{{ ca_dir }}/{{ ca_root_dir }}/private/{{ root_key }}"
     state: file

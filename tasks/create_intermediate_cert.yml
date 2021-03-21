@@ -1,6 +1,7 @@
 ---
 - name: Sign the Intermediate CA certificate
   become: yes
+  become_user: "{{ user }}"
   shell: > 
     openssl ca
     -extensions v3_intermediate_ca -notext -batch
@@ -14,6 +15,7 @@
 
 - name: Set permissions on Intermediate CA certificate
   become: yes
+  become_user: "{{ user }}"
   file:
     path: "{{ ca_dir }}/{{ ca_int_dir }}/certs/{{ int_cert }}"
     state: file
